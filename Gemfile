@@ -29,4 +29,6 @@ gem 'sqlite3-ruby',:require =>'sqlite3'
  group :development, :test do
    gem 'webrat'
    gem 'rspec-rails'
+   gem 'factory_girl_rails'
+   gem 'gravatar_image_tag'
  end

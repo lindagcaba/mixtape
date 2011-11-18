@@ -78,7 +78,7 @@
           </ul>
     <!---Right nav-->
        <ul class= ="nav" class="pull-right">
-          <li><a href="#Sign up">Sign up</a></li>
+          <li><%=link_to "Sign up",new_user_path%></li>
            <li><a href="#Sign in">Sign in </a></li>
         </ul>
      
@@ -93,6 +93,9 @@
         </div>
         <div class="row">
           <div class="span10">
+              <%flash.each do |key,value|  %>
+              <div class ="alert-message <%= key %>"><%=value%></div>
+                 <%end%>
               <%=yield%>
               </div>
         

@@ -55,12 +55,38 @@ describe User do
     duplicate_user.should_not be_valid
   end
 
-  
- it "should require a password" do 
-   no_password_user = User.new(@attr.merge(:password =>""))
-   no_password_user.should_not be_valid
- end
+  describe "password validations" do 
+    it "should require a password" do 
+      no_password_user = User.new(@attr.merge(:password =>"", :password_confirmation =>""))
+      no_password_user.should_not be_valid
+    end
+    it "should reject short passwords " do 
+       short = "a"*5
+       short_password_user = User.new(@attr.merge(:password =>short, :password =>short))
+       short_password_user.should_not be_valid
+    end
+   
+    it "should reject very long passwords " do 
+      long = "a"*51
+      long_password_user = User.new(@attr.merge(:password =>long, :password_confirmation =>long))
+      long_password_user.should_not be_valid
+    end   
+    it "should have a matching password_confirmation " do 
+      User.new(@attr.merge(:password_confirmation =>"invalid")).should_not be_valid
+    end
+    it "should encrypt password " do 
+      @user = User.create!(@attr)
+      @user.should respond_to(:encrypted_password)
 
+    end
+    
+    it "should have non-blank encrypted_password" do 
+       @user = User.create!(@attr)
+       @user.encrypted_password.should_not be_blank
+    end
+     
+   
+  end
  
  
 end

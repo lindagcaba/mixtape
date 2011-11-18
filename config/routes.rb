@@ -1,4 +1,7 @@
 Mixtape::Application.routes.draw do
+
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
   
@@ -7,7 +10,8 @@ Mixtape::Application.routes.draw do
   match '/contact', :to => 'pages#contact'
   match '/help', :to => 'pages#help'
  
-  # Sample of regular route:
+  resources :users 
+ # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
