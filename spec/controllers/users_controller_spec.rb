@@ -15,7 +15,7 @@ describe UsersController do
   describe "POST 'create'" do
     describe "failure" do 
       before(:each) do 
-        @attr ={:name =>"",:email =>"",:password =>"",:password_confirmation =>""}
+        @attr ={:name =>"",:email =>"",:password =>"er",:password_confirmation =>"er"}
       end
       it"should not create user" do 
         lambda do 
@@ -31,6 +31,14 @@ describe UsersController do
         post :create,:user => @attr
         response.should render_template('new') 
       end
+     it "should clear the password field" do
+       post :create, :user => @attr
+       response.should have_selector("input#user_password",:value =>"")
+     end
+     it "should clear the password confirmation field" do 
+        post :create,:user => @attr
+        response.should have_selector("input#user_password_confirmation", :value =>"")
+     end
     end 
     describe "success" do 
       before(:each) do 
