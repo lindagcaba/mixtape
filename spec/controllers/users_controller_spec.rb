@@ -58,6 +58,10 @@ describe UsersController do
         put :create, :user => @attr
         flash[:success].should =~ /welcome to our app/i
       end
+     it "should sign in the user" do 
+       put :create, :user => @attr
+       controller.signed_in?.should be_true
+     end
     end
   end
   describe "GET 'show' "do 
@@ -78,11 +82,11 @@ describe UsersController do
     end
     it "should have the name of the user" do 
       get :show, :id => @user
-      response.should have_selector('h1',:content=>@user.name )
+      response.should have_selector('h1',:content=> @user.name )
     end
     it "should show a profile picture" do 
       get :show, :id => @user
-      response.should have_selector('img',:class =>"thumbnail")
+      response.should have_selector('img',:class => "thumbnail")
     end
   end
 

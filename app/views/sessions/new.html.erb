@@ -1,0 +1,23 @@
+<h1>Sign in </h1>
+
+<%= form_for(:session, :url => sessions_path) do |f| %>
+  <div class ="clearfix">
+   <%= f.label :email %>
+   <div class ="input">
+   <%= f.text_field :email %>
+   </div>
+  </div>
+ 
+  <div class ="clearfix" > 
+  
+   <%= f.label :password %>
+    <div class ="input">
+    <%= f.password_field :password %>
+    </div>
+ </div>
+
+ <div class ="clearfix">
+  <%= f.submit "Sign in" , :class =>"btn primary" %>
+ </div>
+ <%end%>
+ New user?<%=link_to"Sign up now!",new_user_path %>

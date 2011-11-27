@@ -1,5 +1,4 @@
 <h1>Sign up </h1>
-<div class ="form">
 <%=form_for(@user) do |f| %>
   <% if @user.errors.any? %> 
       <div class ="alert-message error ">  
@@ -8,18 +7,36 @@
          <%end%> 
     </div> 
   <%end%>
+<fieldset> 
+<div class="clearfix">
  <%=f.label :name%>
- <%=f.text_field :name %><br/>
-
+<div class ="input">
+ <%=f.text_field :name %>
+</div>
+</div>
+<div class ="clearfix">
  <%=f.label :email%>
- <%=f.text_field :email%><br/>
+  <div class ="input">
+  <%=f.text_field :email%>
+  </div>
+</div>
+
+<div class ="clearfix">
 
  <%=f.label :password%>
- <%=f.password_field :password %> <br/>
-
- <%=f.label :password_confirmation,"Confirmation" %>
- <%=f.password_field :password_confirmation %><br/>
- 
- <%=f.submit "Sign up" %>
-<%end%>
+  <div class = "input">
+ <%=f.password_field :password %> 
+  </div>
 </div>
+<div class ="clearfix">
+ <%=f.label :password_confirmation,"Confirmation" %>
+  <div class ="input">
+ <%=f.password_field :password_confirmation %>
+  </div>
+</div> 
+<div class ="clearfix">
+ <%=f.submit "Sign up",:class =>"btn primary" %>
+</div>
+<%end%>
+</fieldset>
+Already have an Account?<%=link_to("Sign in",signin_path) %>

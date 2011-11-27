@@ -34,4 +34,28 @@ describe "Users" do
        end
      end
    end
- end
+   describe "signin and sign out" do 
+     describe "failure" do 
+       it "should not sign in user" do 
+         visit signin_path
+         fill_in :email, :with =>"lindagcaba@gmail.com"
+         fill_in :password, :with =>""
+         click_button
+         response.should have_selector("div.alert-message",:content =>"Invalid email/password combination")
+       end
+     end
+     describe "success login" do 
+       it "should sign user in and out " do 
+         @user = Factory(:user)
+         visit signin_path
+         fill_in :email, :with =>@user.email
+         fill_in :password, :with => @user.password
+         click_button
+         controller.signed_in?.should be_true
+         click_link "Sign out"
+         controller.signed_in?.should be_false
+         
+      end
+    end
+  end
+end

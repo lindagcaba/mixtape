@@ -78,8 +78,12 @@
           </ul>
     <!---Right nav-->
        <ul class= ="nav" class="pull-right">
-          <li><%=link_to "Sign up",new_user_path%></li>
-           <li><a href="#Sign in">Sign in </a></li>
+          <% if signed_in? %>
+            <li><%=link_to("Sign out",signout_path) %></li>
+            <%else %>
+          <li><%=link_to "Sign up",new_user_path%></li>            
+          <li><%=link_to("Sign in", signin_path)%></li>
+          <%end%>
         </ul>
      
         </div>

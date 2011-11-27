@@ -16,7 +16,24 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password
 
   before_save :encrypt_password
- 
+  def has_password?(password)
+    encrypt(password) == encrypted_password 
+  end  
+
+
+  def self.authenticate(email,password)
+     user = User.find_by_email(email)
+     return nil if user.nil?|| !user.has_password?(password) 
+     return user if user.has_password?(password)
+  end
+  
+  def self.authenticate_with_salt(id, salt)
+    user = User.find_by_id(id)
+    return nil if user.nil?
+    return user if user.salt == salt
+  end
+  
+
   private
    
     def encrypt_password
