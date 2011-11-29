@@ -2,6 +2,7 @@
 <%=form_for(@user) do |f| %>
   <% if @user.errors.any? %> 
       <div class ="alert-message error ">  
+        Something's wrong:<br/>
          <%@user.errors.full_messages.each do |msg| %>
            <%=msg%> <br/>
          <%end%> 
