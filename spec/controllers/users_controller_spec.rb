@@ -88,6 +88,124 @@ describe UsersController do
       get :show, :id => @user
       response.should have_selector('img',:class => "thumbnail")
     end
+    describe "for current_user" do 
+      before(:each) do 
+       test_sign_in(@user)
+      end
+      it "should have an 'edit profile'" do 
+        get :show, :id => @user
+        response.should have_selector('a', :content =>"Edit Profile") 
+      end
+    end
   end
+  describe "GET 'edit'" do
+    before(:each) do 
+      @user = Factory(:user)
+      test_sign_in(@user)
+    end
+    it "should have http success" do 
+      get :edit, :id => @user
+      response.should be_success
+    end
+    it " should have the right title" do 
+      get :edit, :id => @user
+      response.should have_selector("title", :content => "Edit Profile" )
+    end
+  end
+  describe "PUT 'update'" do
+    before(:each) do  
+      @user = Factory(:user)
+      test_sign_in(@user) # sign the user in before can edit profile
+    end 
+    describe "failure" do
+      before(:each) do
+        @attr ={:name => "", :email => "", :password => "", :password_confirmation => ""}
+      end
+      it "should render the edit page" do 
+        put :update, :id => @user, :user => @attr
+        response.should render_template('edit')
+      end
+      it "should have the right title " do 
+        put :update, :id => @user, :user => @attr
+        response.should have_selector('title', :content =>"Edit Profile")
+      end
+    end
 
+    describe "success" do
+      before(:each) do 
+       @attr ={:name =>"MrMan", :email => "mrman@gmail.com", :password => "newpassword", :password_confirmation => "newpassword"}
+      end
+      it "should redirect to profile page" do 
+        put :update, :id => @user, :user => @attr
+        response.should redirect_to(user_path(@user))
+      end
+      it "should update/change the user data" do 
+        put :update, :id => @user, :user => @attr
+        @user.reload
+        @user.name.should  == @attr[:name]
+        @user.email.should == @attr[:email]
+      end
+      it "should show flash messsage " do 
+        put :update, :id => @user, :user => @attr
+        flash[:success].should  =~ /profile updated/i
+      end  
+    end 
+  end
+  describe "restricting access to the edit/update actions" do
+    describe "for non-signed in users" do  
+
+      before(:each) do 
+        @user = Factory(:user)
+      end
+      it "should deny access to 'edit' page "do 
+        get :edit, :id => @user
+        response.should redirect_to(signin_path())  
+      end
+      it "should deny access to 'update'" do
+        put :update, :id => @user, :user =>{}
+        response.should redirect_to(signin_path())
+     end
+   end
+   describe "for signed-in users" do
+      before(:each) do 
+       @user = Factory(:user)
+       wrong_user =Factory(:user,:email => "wronguser@email.com")
+       test_sign_in(wrong_user)     
+      end
+      it "should deny access to 'edit' page for incorrect user" do
+          get :edit, :id =>@user
+          response.should redirect_to(root_path)
+      end   
+      it "should deny access  to 'update' for incorrect user" do
+         put :update, :id => @user, :user =>{}
+         response.should redirect_to(root_path)
+      end
+    end
+  end
+  describe "GET 'index'" do 
+    before(:each) do 
+     first_user = Factory.create(:user)
+     second_user = Factory.create(:user, :name =>"Oscar", :email =>"second_user@gmail.com.com")
+     @users = [first_user, second_user]
+    end
+    it"should return http success" do 
+      get :index
+      response.should be_success
+    end
+    it "should have the right title" do 
+      get :index
+      response.should have_selector('title',:content => "Members")
+    end
+    it "should correctly return all the users" do 
+       get :index
+       assigns(:users).should == @users
+    end
+    it "should display names of all users" do 
+      get :index
+      @users.each do |user|
+         response.should have_selector('li',:content => user.name)
+      end
+    end
+   
+  end
 end

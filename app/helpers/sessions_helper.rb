@@ -21,13 +21,16 @@ module SessionsHelper
   current_user = nil  
  end
   private 
-   def user_from_token
-     User.authenticate_with_salt(*remember_token)
-   end
+    def user_from_token
+      User.authenticate_with_salt(*remember_token)
+    end
 
   
-   def remember_token
-     cookies.signed[:remember_token] ||[nil,nil]
-   end
-
+    def remember_token
+      cookies.signed[:remember_token] ||[nil,nil]
+    end
+    def deny_access
+      flash[:warning] = "Please Sign in to access page"
+      redirect_to signin_path
+    end
 end

@@ -4,10 +4,11 @@
     </div>
     <div class ="span6">
         <h1><%=@user.name %></h1> <br/>
-        Location: <br/> 
-        Member Since:
          
-       
+    <% if @user == current_user %>
+      <%=link_to "Edit Profile", edit_user_path(@user) %>
+    <%end%>
+
     </div>
  </div>
 

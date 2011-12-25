@@ -1,0 +1,46 @@
+<h2>Edit Profile</h2>
+
+<%=form_for(@user) do |f|  %>
+ <% if @user.errors.any? %>
+   <div class ="alert-message error">
+     Something's wrong:<br/> 
+   <%@user.errors.full_messages.each do |msg| %>
+           <%=msg %> <br/>
+    <%end%>
+   </div>
+ <%end%>
+   <fieldset>
+    <div class = "clearfix">
+         <%=f.label :name %>
+         <div class ="input"> 
+         <%=f.text_field :name %>
+         </div>
+    </div>
+    <div class = "clearfix">
+       <%=f.label :email %>
+       <div class = "input" >
+      <%=f.text_field :email %>
+       </div>
+    </div> 
+   
+   <div class = "clearfix">
+      <%=f.label :password %> 
+      <div class = "input">
+      <%=f.password_field :password %>
+      </div>
+  </div>
+
+  <div class = "clearfix">
+     <%= f.label :password_confirmation, "Confirmation" %>
+     <div class = "input" >
+      <%=f.password_field :password_confirmation%>
+     </div>
+  
+  </div>
+ <div class = "clearfix" >
+   <%=f.submit :update, :class => "btn primary" %>
+ </div>
+ </fieldset>
+
+
+<%end%>

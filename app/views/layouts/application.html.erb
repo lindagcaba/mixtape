@@ -45,7 +45,6 @@
         padding: 20px 20px 10px;
         margin: -20px -20px 20px;
       }
-
       /* Styles you shouldn't keep as they are for displaying this base example only */
       .content .span10,
       .content .span4 {
@@ -74,11 +73,12 @@
           <ul class="nav">
             <li class="active"><%=link_to("Home",root_path)%></a></li>
             <li><a href="#music">Music</a></li>
-            <li><a href="#members">Members</a></li>
+            <li><%= link_to("Members", users_path)%></li>
           </ul>
     <!---Right nav-->
        <ul class= ="nav" class="pull-right">
           <% if signed_in? %>
+            <li><%=link_to("Profile",user_path(current_user))%></li>
             <li><%=link_to("Sign out",signout_path) %></li>
             <%else %>
           <li><%=link_to "Sign up",new_user_path%></li>            
@@ -113,7 +113,6 @@
            <li><%=link_to("Contact",contact_path)%></li>
            <li><%=link_to("Help",help_path)%></li>
         </ul>
-        
       </footer>
 
     </div> <!-- /container -->

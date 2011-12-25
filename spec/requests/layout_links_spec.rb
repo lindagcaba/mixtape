@@ -52,6 +52,10 @@ describe "LayoutLinks" do
 
     click_link "Sign in"
     response.should have_selector("title", :content => "Sign in")
+
+    click_link "Members"
+    response.should have_selector("title", :content => "Members")
+   
  end
  
  describe "when not signed in " do 
@@ -69,10 +73,14 @@ describe "LayoutLinks" do
      fill_in :password, :with => @user.password  
      click_button
    end
-  it "should have a Sign out link" do 
+   it "should have a Sign out link" do 
      visit root_path
      response.should have_selector("a",:href => signout_path,:content =>"Sign out")
-  end
+   end
+   it "should have link to profile page" do 
+     visit root_path
+     response.should have_selector("a",:href =>user_path(@user), :content => "Profile")
+   end
   
  end
 
