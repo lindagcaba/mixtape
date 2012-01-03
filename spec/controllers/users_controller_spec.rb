@@ -206,6 +206,53 @@ describe UsersController do
          response.should have_selector('li',:content => user.name)
       end
     end
-   
+  end
+  describe "DELETE 'destroy'" do 
+    before(:each) do 
+       @admin_user = Factory(:user, :admin => true)
+       @non_admin_user1 = Factory(:user, :email => Factory.next(:email))
+       @non_admin_user2 = Factory(:user, :email => Factory.next(:email))
+    end
+    describe "for non-signed in users" do 
+      it "should not allow deletion " do 
+        lambda do 
+          delete :destroy, :id => @non_admin_user2
+        end.should_not  change(User, :count).by(-1)
+      end
+      it "should redirect to signin page " do
+        delete :destroy, :id => @non_admin_user2
+        response.should redirect_to signin_path
+      end
+    end
+    describe "for non-admin users" do
+      before(:each) do 
+        test_sign_in(@non_admin_user1)
+      end
+      it "should not allow deletion" do 
+        lambda  do 
+         delete :destroy, :id => @non_admin_user2
+        end.should_not change(User,:count).by(-1)
+      end
+      it "should redirect to root with error message" do 
+        delete :destroy, :id => @non_admin_user2
+        response.should redirect_to(root_path)
+        flash[:error].should =~ /Not Authorized/i
+      end
+    end
+    describe "for admin users" do 
+      before(:each) do 
+        test_sign_in(@admin_user)
+      end 
+      it "should delete the user" do 
+        lambda do 
+          delete :destroy, :id => @non_admin_user2
+        end.should change(User, :count).by(-1)
+      end 
+      it "should redirect to index page when done" do 
+        delete :destroy, :id => @non_admin_user2
+        response.should redirect_to(users_path)
+        flash[:success].should =~ / Deleted /i
+      end
+    end
   end
 end
