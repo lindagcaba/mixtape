@@ -1,5 +1,8 @@
  <ul>
 <% @users.each do |user| %>
-  <li><%= user.name %></li>
+  <li><%= user.name %></li> 
+  <% if current_user.nil? || current_user.admin? %>
+     <li> <%=link_to :delete , :destroy %> </li>
+   <%end%>
 <%end%>
 </ul>

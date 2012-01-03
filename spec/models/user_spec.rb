@@ -117,5 +117,20 @@ describe User do
       correct_pass_user.should == @user
     end
   end
+  describe "admin user" do
+    before(:each) do
+      @user = User.create!(@attr) 
+    end
+    it "should have 'admin' attribute" do 
+     @user.should respond_to(:admin) 
+    end
+    it "should not be 'admin' by default" do
+      @user.should_not be_admin 
+    end
+    it "should be convertible to admin" do
+      @user.toggle!(:admin)
+      @user.should be_admin 
+    end
+  end
  
 end
