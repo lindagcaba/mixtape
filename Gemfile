@@ -31,4 +31,5 @@ gem 'gravatar_image_tag'
    gem 'webrat'
    gem 'rspec-rails'
    gem 'factory_girl_rails'
+   gem 'faker'
  end
