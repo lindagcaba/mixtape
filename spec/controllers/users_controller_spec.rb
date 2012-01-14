@@ -185,7 +185,7 @@ describe UsersController do
   describe "GET 'index'" do 
     before(:each) do 
      first_user = Factory.create(:user)
-     second_user = Factory.create(:user, :name =>"Oscar", :email =>"second_user@gmail.com.com")
+     second_user = Factory.create(:user, :name =>"Oscar", :email => Factory.next(:email))
      @users = [first_user, second_user]
     end
     it"should return http success" do 
@@ -204,6 +204,20 @@ describe UsersController do
       get :index
       @users.each do |user|
          response.should have_selector('li',:content => user.name)
+      end
+    end
+    it "should not display delete links" do 
+      get :index
+      response.should_not have_selector('a',:content => "Delete")
+    end
+    describe "for admin_user" do 
+      before(:each) do 
+        admin_user = Factory(:user,:email => Factory.next(:email),:admin => true)
+        test_sign_in(admin_user)
+      end
+      it "should show delete links againsts users " do 
+        get :index
+        response.should have_selector('a',:content => "Delete")
       end
     end
   end
