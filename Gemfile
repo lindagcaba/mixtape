@@ -8,6 +8,7 @@ gem 'rails', '3.0.8'
 gem 'sqlite3'
 gem 'sqlite3-ruby',:require =>'sqlite3'
 gem 'gravatar_image_tag'
+gem 'tdd-attachment_fu'
 # Use unicorn as the web server
 # gem 'unicorn'
 
